@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  quiz:
+    image: plotva/quiz
+    ports:
+      - 7000:7000
+    environment:
+      - QUIZ_DB_USERNAME=${QUIZ_DB_USERNAME}
+      - QUIZ_DB_URL=${QUIZ_DB_DOCKER_URL}
