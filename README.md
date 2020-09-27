@@ -5,7 +5,6 @@
 Please make sure you have following tools installed before continuing:
 - Docker, Docker-Compose
 - Java 11
-- Maven 3.x
 - PostgresSQL 10+
 
 ##### Set Up Database
@@ -27,8 +26,6 @@ Create database tables running following SQL file in your database: `<project_ro
 
 Run following commands in terminal:
 ```
-$ maven clean install
-$ mvn package
 $ ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=plotva/quiz
 $ docker-compose up
 ```
