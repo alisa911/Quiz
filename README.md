@@ -1,14 +1,14 @@
-###Quiz game web app 
+### Quiz game web app
 
-####Installation and Launch
-#####Pre-Requisites:
+#### Installation and Launch
+##### Pre-Requisites:
 Please make sure you have following tools installed before continuing:
 - Docker, Docker-Compose
 - Java 11
 - Maven 3.x
 - PostgresSQL 10+
 
-#####Set Up Database
+##### Set Up Database
 
 * Create an empty PostgreSQK database;
 * Create a new file named `.env` in project root directory.
@@ -33,5 +33,5 @@ $ ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=plotva/quiz
 $ docker-compose up
 ```
 
-####Done
+#### Done
 Open http://localhost:7000 in your browser.
