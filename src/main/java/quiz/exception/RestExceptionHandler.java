@@ -1,15 +1,15 @@
-package quiz.exception.handler;
+package quiz.exception;
 
-import quiz.exception.CustomNotFoundException;
-import quiz.exception.NoOneTrueAnswerException;
-import quiz.exception.SeveralTrueAnswersException;
-import quiz.exception.AlreadyExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import quiz.exception.exceptions.AlreadyExistException;
+import quiz.exception.exceptions.CustomNotFoundException;
+import quiz.exception.exceptions.NoOneTrueAnswerException;
+import quiz.exception.exceptions.SeveralTrueAnswersException;
 
 import static org.springframework.http.ResponseEntity.notFound;
 

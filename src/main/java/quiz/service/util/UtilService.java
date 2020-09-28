@@ -3,8 +3,8 @@ package quiz.service.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import quiz.domain.Answer;
-import quiz.exception.NoOneTrueAnswerException;
-import quiz.exception.SeveralTrueAnswersException;
+import quiz.exception.exceptions.NoOneTrueAnswerException;
+import quiz.exception.exceptions.SeveralTrueAnswersException;
 
 import java.util.Set;
 

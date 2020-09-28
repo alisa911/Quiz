@@ -2,8 +2,8 @@ package quiz.service;
 
 import quiz.domain.Answer;
 import quiz.domain.Question;
-import quiz.exception.AlreadyExistException;
-import quiz.exception.CustomNotFoundException;
+import quiz.exception.exceptions.AlreadyExistException;
+import quiz.exception.exceptions.CustomNotFoundException;
 import quiz.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

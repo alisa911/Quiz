@@ -1,4 +1,4 @@
-package quiz.exception;
+package quiz.exception.exceptions;
 
 public class SeveralTrueAnswersException extends RuntimeException {
 
