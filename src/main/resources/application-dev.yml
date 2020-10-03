@@ -1,10 +1,15 @@
-server:
-  port: 7000
 
 spring:
+  profiles: dev
   datasource:
+    driverClassName: org.postgresql.Driver
     username: ${QUIZ_DB_USERNAME}
     url: ${QUIZ_DB_URL}
   jpa:
     show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 7000
+
+

@@ -1,6 +1,7 @@
 package quiz.domain;
 
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -21,6 +22,6 @@ public class Question {
     @Column(name = "question")
     private String question;
 
-    @OneToMany(mappedBy = "question", cascade=CascadeType.REMOVE)
+    @OneToMany(mappedBy = "question", cascade=CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Answer> answers;
 }

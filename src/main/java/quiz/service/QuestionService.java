@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static quiz.service.util.UtilService.checkTrueAnswersCount;
@@ -48,24 +50,29 @@ public class QuestionService implements CrudService<Question> {
 
         Set<Answer> answersExists = questionExists.getAnswers();
         Set<Answer> answersNew = question.getAnswers();
+        Set<Answer> answersAll = new HashSet<>(answersExists);
 
-        checkTrueAnswersCount(answersNew);
+        Optional.ofNullable(answersNew).ifPresent(answersAll::addAll);
+
+        checkTrueAnswersCount(answersAll);
 
         for (Answer answerExist : answersExists) {
-            for (Answer answerNew : answersNew) {
-                if (answersNew.stream()
-                        .noneMatch(answer -> answer.getValue()
-                                .equals(answerExist.getValue()))) {
-                    answerRepository.delete(answerExist);
-                } else if (answerNew.getValue().equals(answerExist.getValue())) {
-                    answerNew.setId(answerExist.getId());
-                    answerNew.setQuestion(question);
-                    answerRepository.save(answerNew);
-                } else if (answersExists.stream()
-                        .noneMatch(answer -> answer.getValue()
-                                .equals(answerNew.getValue()))) {
-                    answerNew.setQuestion(question);
-                    answerRepository.save(answerNew);
+            if (answersNew != null) {
+                for (Answer answerNew : answersNew) {
+                    if (answersNew.stream()
+                            .noneMatch(answer -> answer.getValue()
+                                    .equals(answerExist.getValue()))) {
+                        answerRepository.delete(answerExist);
+                    } else if (answerNew.getValue().equals(answerExist.getValue())) {
+                        answerNew.setId(answerExist.getId());
+                        answerNew.setQuestion(question);
+                        answerRepository.save(answerNew);
+                    } else if (answersExists.stream()
+                            .noneMatch(answer -> answer.getValue()
+                                    .equals(answerNew.getValue()))) {
+                        answerNew.setQuestion(question);
+                        answerRepository.save(answerNew);
+                    }
                 }
             }
         }
