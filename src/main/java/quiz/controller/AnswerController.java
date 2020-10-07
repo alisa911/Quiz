@@ -63,6 +63,7 @@ public class AnswerController {
         LOGGER.info("create {}", answerRequest);
 
         Answer answer = answerMapper.toAnswer(answerRequest);
+
         AnswerResponse answerResponse = answerMapper.toAnswerResponse(answerService.create(answer));
 
         return created(
