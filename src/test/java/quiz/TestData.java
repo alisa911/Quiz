@@ -15,8 +15,9 @@ public class TestData {
     public static Answer ANSWER_2 = new Answer(null,"никогда",null,true);
     public static Answer ANSWER_3 = new Answer(null,"не знаю",null,false);
     public static Answer ANSWER_4 = new Answer(null,"нигде",null,false);
+    public static Answer ANSWER_6 = new Answer(null,"что",null,true);
 
-    public static String QUESTION_STRING = "Но как же так?";
+    public static String STRING = "Но как же так?";
 
     public static Long BIG_ID = 100L;
 

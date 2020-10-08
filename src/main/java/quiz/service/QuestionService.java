@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static quiz.service.util.UtilService.checkAnswerExists;
 import static quiz.service.util.UtilService.checkTrueAnswersCount;
 
 @Service
@@ -28,7 +29,6 @@ public class QuestionService implements CrudService<Question> {
     @Override
     public Question create(Question question) {
         Set<Answer> answers = question.getAnswers();
-
         checkQuestionExists(question);
         checkTrueAnswersCount(answers);
 
@@ -59,27 +59,8 @@ public class QuestionService implements CrudService<Question> {
         Optional.ofNullable(answersNew).ifPresent(answersAll::addAll);
 
         checkTrueAnswersCount(answersAll);
+        checkAnswerExists(answersNew, answersExists, question, answerRepository);
 
-        for (Answer answerExist : answersExists) {
-            if (answersNew != null) {
-                for (Answer answerNew : answersNew) {
-                    if (answersNew.stream()
-                            .noneMatch(answer -> answer.getValue()
-                                    .equals(answerExist.getValue()))) {
-                        answerRepository.delete(answerExist);
-                    } else if (answerNew.getValue().equals(answerExist.getValue())) {
-                        answerNew.setId(answerExist.getId());
-                        answerNew.setQuestion(question);
-                        answerRepository.save(answerNew);
-                    } else if (answersExists.stream()
-                            .noneMatch(answer -> answer.getValue()
-                                    .equals(answerNew.getValue()))) {
-                        answerNew.setQuestion(question);
-                        answerRepository.save(answerNew);
-                    }
-                }
-            }
-        }
         questionRepository.save(question);
     }
 

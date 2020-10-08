@@ -1,5 +1,6 @@
 package quiz.service;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,16 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static quiz.TestData.*;
 
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RunWith(SpringRunner.class)
 @SpringBootTest(properties = "spring.profiles.active:test")
 class QuestionServiceTest {
 
-    @Autowired
-    private QuestionService questionService;
-    @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
-    private AnswerRepository answerRepository;
+    private final QuestionService questionService;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
-    Long id1;
+    Long questionId;
 
     @BeforeEach
     void setUp() {
@@ -38,13 +37,13 @@ class QuestionServiceTest {
         ANSWER_2.setQuestion(QUESTION_1);
         answerRepository.save(ANSWER_2);
         questionRepository.save(QUESTION_2);
-        id1 = QUESTION_1.getId();
+        questionId = QUESTION_1.getId();
     }
 
     //get
     @Test
     void get() {
-        Question actualQuestion = questionService.get(id1);
+        Question actualQuestion = questionService.get(questionId);
         assertMatch(actualQuestion, QUESTION_1);
     }
 
@@ -65,7 +64,7 @@ class QuestionServiceTest {
     //delete
     @Test
     void delete() {
-        questionService.delete(id1);
+        questionService.delete(questionId);
         List<Question> expectedQuestions = List.of(QUESTION_2);
         List<Question> actualQuestions = questionService.getAll();
 
@@ -106,9 +105,9 @@ class QuestionServiceTest {
     //update
     @Test
     void update() {
-        Question actualQuestion = questionService.get(id1);
-        QUESTION_1.setQuestion(QUESTION_STRING);
-        questionService.update(QUESTION_1, id1);
+        Question actualQuestion = questionService.get(questionId);
+        QUESTION_1.setQuestion(STRING);
+        questionService.update(QUESTION_1, questionId);
 
         assertMatch(actualQuestion, QUESTION_1);
     }
@@ -117,12 +116,6 @@ class QuestionServiceTest {
     void updateNotFound() {
         assertThrows(CustomNotFoundException.class, () ->
                 questionService.update(QUESTION_1, BIG_ID));
-    }
-
-    @Test
-    void updateAlreadyExist(){
-        assertThrows(AlreadyExistException.class, () ->
-                questionService.update(QUESTION_2, id1));
     }
 
     @AfterEach
