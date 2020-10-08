@@ -46,6 +46,10 @@ public class QuestionService implements CrudService<Question> {
         Question questionExists = questionRepository.findById(questionId)
                 .orElseThrow(() -> new CustomNotFoundException(questionId));
 
+        if (!questionExists.getQuestion().equals(question.getQuestion())){
+            checkQuestionExists(question);
+        }
+
         question.setId(questionId);
 
         Set<Answer> answersExists = questionExists.getAnswers();

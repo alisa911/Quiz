@@ -1,10 +1,10 @@
-drop table if exists questions;
+drop table if exists questions cascade;
 drop table if exists answers;
 
 create table "questions"
 (
     "id"             bigserial    not null,
-    "question"       varchar(255) not null,
+    "question"       varchar(255) not null UNIQUE,
     constraint "questions_pk" primary key ("id")
 );
 
