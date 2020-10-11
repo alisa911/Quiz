@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Добавить новый вопрос</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>Добавить вопрос:</h1>
+
+<form th:action="@{/ui/questions}"
+      th:object="${questionForm}"
+      th:method="POST">
+    <fieldset>
+        Вопрос:
+        <input type="text" th:field="*{question}"/>
+        <br/>
+        Ответ:
+        <input type="text" th:field="*{answers[0].value}"/>
+        <input type="checkbox" th:field="*{answers[0].isTrue}"/>
+        <input hidden type="text" th:field="*{answers[0].questionId}"/>
+    </fieldset>
+    <br/>
+    <input type="submit" value="Create"/>
+</form>
+
+</body>
+</html>

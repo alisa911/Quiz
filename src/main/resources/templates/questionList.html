@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Person List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>Список вопросов</h1>
+<div>
+    <table>
+        <tr>
+            <th>Вопрос</th>
+            <th>Ответы</th>
+        </tr>
+        <tr th:each="question:${questions}">
+            <td th:utext="${question.question}">Question</td>
+            <td th:each="answer:${question.answers}"
+                th:utext="${answer.getValue()}"
+                th:class="${answer.getIsTrue()} ? 'trueAnswer' : '' ">Answers
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

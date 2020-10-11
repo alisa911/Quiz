@@ -1,4 +1,4 @@
-package quiz.controller;
+package quiz.controller.rest;
 
 import quiz.controller.mapper.QuestionMapper;
 import quiz.controller.request.QuestionRequest;
@@ -17,7 +17,7 @@ import java.util.List;
 
 import static org.springframework.http.ResponseEntity.*;
 
-@RestController
+@RestController("rest")
 @RequestMapping("/questions")
 @RequiredArgsConstructor
 public class QuestionController {

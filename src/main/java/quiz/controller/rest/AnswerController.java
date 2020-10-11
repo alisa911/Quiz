@@ -1,4 +1,4 @@
-package quiz.controller;
+package quiz.controller.rest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

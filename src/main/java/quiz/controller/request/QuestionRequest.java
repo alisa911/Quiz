@@ -1,14 +1,15 @@
 package quiz.controller.request;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class QuestionRequest {
 
     private String question;
-    private Set<AnswerRequest> answers;
+    private List<AnswerRequest> answers;
 }

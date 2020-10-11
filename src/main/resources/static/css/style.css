@@ -1,0 +1,12 @@
+.trueAnswer  {
+    color: mediumseagreen;
+}
+
+table {
+    border: 1px solid black;
+}
+
+table td {
+    padding: 5px;
+    border: 1px solid black
+}
