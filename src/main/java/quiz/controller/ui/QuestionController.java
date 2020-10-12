@@ -36,10 +36,17 @@ public class QuestionController {
         return "addQuestion";
     }
 
-    @PostMapping(path = "",  produces = MediaType.APPLICATION_JSON_VALUE)
-    public String save(@ModelAttribute("questionForm")QuestionRequest questionRequest) {
+    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String save(@ModelAttribute("questionForm") QuestionRequest questionRequest) {
         Question question = questionMapper.toQuestion(questionRequest);
         questionService.create(question);
+        return "redirect:/ui/questions/all";
+    }
+
+    @GetMapping("/delete")
+    public String handleDeleteUser(@RequestParam(name = "questionId") Long id) {
+        questionService.get(id);
+        questionService.delete(id);
         return "redirect:/ui/questions/all";
     }
 }

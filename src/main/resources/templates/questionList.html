@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Person List</title>
+    <title>Question List</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -12,15 +12,25 @@
         <tr>
             <th>Вопрос</th>
             <th>Ответы</th>
+            <th></th>
         </tr>
         <tr th:each="question:${questions}">
             <td th:utext="${question.question}">Question</td>
-            <td th:each="answer:${question.answers}"
-                th:utext="${answer.getValue()}"
-                th:class="${answer.getIsTrue()} ? 'trueAnswer' : '' ">Answers
+            <td>
+                <table>
+                    <tr>
+                        <td th:each="answer:${question.answers}"
+                            th:utext="${answer.getValue()}"
+                            th:class="${answer.getIsTrue()} ? 'trueAnswer' : '' ">Answers
+                        </td>
+                    </tr>
+                </table>
             </td>
+            <td><a th:href="@{/ui/questions/delete(questionId=${question.id})}" class="btn btn-danger">Delete</a></td>
         </tr>
     </table>
 </div>
+<br/>
+<a th:href="@{/ui/questions/}">Добавить вопрос</a>
 </body>
 </html>
