@@ -15,14 +15,36 @@
         Вопрос:
         <input type="text" th:field="*{question}"/>
         <br/>
-        Ответ:
-        <input type="text" th:field="*{answers[0].value}"/>
-        <input type="checkbox" th:field="*{answers[0].isTrue}"/>
-        <input hidden type="text" th:field="*{answers[0].questionId}"/>
+        <br/>
+        Ответы:
+        <div id="answers-list">
+            <div th:each="answer, rowStat : *{answers}" class="answer-form">
+                <input type="text" th:field="*{answers[__${rowStat.index}__].value}"/>
+                <input type="checkbox" th:field="*{answers[__${rowStat.index}__].isTrue}"/>
+                <input hidden type="text" th:field="*{answers[__${rowStat.index}__].questionId}"/>
+            </div>
+        </div>
+        <br/>
+        <div id="parentElement" class="row text-right">
+            <button onclick="return addInputLine();" name="addInputLine-btn">Добавить еще один ответ</button>
+        </div>
     </fieldset>
     <br/>
     <input type="submit" value="Create"/>
 </form>
-
+<script type="text/javascript">
+    function addInputLine() {
+        let answersListEl = document.getElementById("answers-list");
+        let div = document.createElement('div');
+        let currentCount = answersListEl.getElementsByClassName('answer-form').length;
+        div.className = 'answer-form';
+        div.innerHTML = '<input type="text" name="answers[' + currentCount + '].value" />\n' +
+            '<input type="checkbox" name="answers[' + currentCount + '].isTrue" value="true" />\n' +
+            '<input type="hidden" name="_answers[' + currentCount + '].isTrue" value="on"/>' +
+            '<input hidden type="text" name="answers[' + currentCount + '].questionId" />';
+        answersListEl.appendChild(div);
+        return false;
+    }
+</script>
 </body>
 </html>

@@ -29,7 +29,6 @@ public class QuestionController {
 
     @GetMapping("")
     public String showAddQuestionPage(Model model) {
-
         AnswerRequest answerRequest = AnswerRequest.builder().build();
         QuestionRequest questionRequest = QuestionRequest.builder().answers(List.of(answerRequest)).build();
 
