@@ -18,7 +18,7 @@ import java.util.List;
 import static org.springframework.http.ResponseEntity.*;
 import static org.springframework.http.ResponseEntity.noContent;
 
-@RestController
+@RestController("rest-answer")
 @RequestMapping("/answers")
 @RequiredArgsConstructor
 public class AnswerController {

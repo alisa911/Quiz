@@ -3,7 +3,7 @@ package quiz.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "questions")
@@ -23,5 +23,5 @@ public class Question {
     private String question;
 
     @OneToMany(mappedBy = "question", cascade=CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private Set<Answer> answers;
+    private List<Answer> answers;
 }

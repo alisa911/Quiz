@@ -2,26 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Добавить новый вопрос</title>
+    <title>Редактировать вопрос</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body class="lemons-background">
-<h1>Добавить вопрос:</h1>
+<h1>Редактировать вопрос:</h1>
 
-<form th:action="@{/ui/questions}"
+<form th:action="@{/ui/questions/update/{id}(id=${questionForm.id})}"
       th:object="${questionForm}"
       th:method="POST">
     <fieldset>
         Вопрос:
-        <input type="text" th:field="*{question}"/>
+        <input type="text" th:field="*{question}" th:value="${questionForm.question}"/>
         <br/>
         <br/>
         Ответы:
         <div id="answers-list">
             <div th:each="answer, rowStat : *{answers}" class="answer-form">
-                <input class="input-add" type="text" th:field="*{answers[__${rowStat.index}__].value}"/>
-                <input class="input-options" type="checkbox" th:field="*{answers[__${rowStat.index}__].isTrue}"/>
-                <input hidden type="text" th:field="*{answers[__${rowStat.index}__].questionId}"/>
+                <input type="text" th:field="*{answers[__${rowStat.index}__].value}"
+                       th:value="${questionForm.answers[__${rowStat.index}__].value}"/>
+                <input class="input-options" type="checkbox"
+                       th:value="${questionForm.answers[__${rowStat.index}__].isTrue}"
+                       th:field="*{answers[__${rowStat.index}__].isTrue}"/>
+                <input hidden type="text" th:value="${questionForm.answers[__${rowStat.index}__].question}"/>
+                <a th:href="@{/ui/answers/delete(answerId=${questionForm.answers[__${rowStat.index}__].id})}"
+                   class="button delete-answer input-options">удалить</a>
             </div>
         </div>
         <br/>
@@ -40,10 +45,11 @@
         let div = document.createElement('div');
         let currentCount = answersListEl.getElementsByClassName('answer-form').length;
         div.className = 'answer-form';
-        div.innerHTML = '<input class="input-add" type="text" name="answers[' + currentCount + '].value" />\n' +
+        div.innerHTML = '<input type="text" name="answers[' + currentCount + '].value" />\n' +
             '<input class="input-options" type="checkbox" name="answers[' + currentCount + '].isTrue" value="true" />\n' +
             '<input type="hidden" name="_answers[' + currentCount + '].isTrue" value="on"/>' +
-            '<input hidden type="text" name="answers[' + currentCount + '].questionId" />';
+            '<input hidden type="text" name="answers[' + currentCount + '].question" />' +
+            '<a th:href="@{/ui/answers/delete(answerId=${questionForm.answers[__${rowStat.index}__].id})}" class="button delete-answer input-options">удалить</a>';
         answersListEl.appendChild(div);
         return false;
     }

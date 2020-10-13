@@ -17,7 +17,7 @@ import java.util.List;
 
 import static org.springframework.http.ResponseEntity.*;
 
-@RestController("rest")
+@RestController("rest-question")
 @RequestMapping("/questions")
 @RequiredArgsConstructor
 public class QuestionController {

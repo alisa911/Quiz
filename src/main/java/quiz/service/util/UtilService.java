@@ -11,12 +11,13 @@ import quiz.exception.exceptions.SeveralTrueAnswersException;
 import quiz.repository.AnswerRepository;
 import quiz.repository.QuestionRepository;
 
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UtilService {
 
-    public static void checkTrueAnswersCount(Set<Answer> answers) {
+    public static void checkTrueAnswersCount(List<Answer> answers) {
         int trueAnswersSize = (int) answers.stream()
                 .filter(Answer::getIsTrue).count();
 
@@ -29,7 +30,7 @@ public class UtilService {
         }
     }
 
-    public static void checkAnswerExists(Set<Answer> answersNew, Set<Answer> answersExists,
+    public static void checkAnswerExists(List<Answer> answersNew, List<Answer> answersExists,
                                          Question question, AnswerRepository answerRepository) {
 
         for (Answer answerExist : answersExists) {
@@ -54,7 +55,7 @@ public class UtilService {
         }
     }
 
-    public static void checkAnswerExists(Answer answer, Set<Answer> answersExists) {
+    public static void checkAnswerExists(Answer answer, List<Answer> answersExists) {
         if (answersExists.stream()
                 .anyMatch(answerExists -> answerExists.getValue().equals(answer.getValue()))) {
             throw new AlreadyExistException("Such an answer already exists: " + answer.getValue());

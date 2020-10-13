@@ -14,7 +14,7 @@ import quiz.service.QuestionService;
 import java.util.List;
 
 @RequestMapping("/ui/questions")
-@Controller("ui")
+@Controller("ui-question")
 @RequiredArgsConstructor
 public class QuestionController {
 
@@ -24,6 +24,7 @@ public class QuestionController {
     @GetMapping("/all")
     public String all(Model model) {
         model.addAttribute("questions", questionService.getAll());
+
         return "questionList";
     }
 
@@ -31,8 +32,8 @@ public class QuestionController {
     public String showAddQuestionPage(Model model) {
         AnswerRequest answerRequest = AnswerRequest.builder().build();
         QuestionRequest questionRequest = QuestionRequest.builder().answers(List.of(answerRequest)).build();
-
         model.addAttribute("questionForm", questionRequest);
+
         return "addQuestion";
     }
 
@@ -40,13 +41,31 @@ public class QuestionController {
     public String save(@ModelAttribute("questionForm") QuestionRequest questionRequest) {
         Question question = questionMapper.toQuestion(questionRequest);
         questionService.create(question);
+
         return "redirect:/ui/questions/all";
     }
 
     @GetMapping("/delete")
-    public String handleDeleteUser(@RequestParam(name = "questionId") Long id) {
+    public String handleDeleteQuestion(@RequestParam(name = "questionId") Long id) {
         questionService.get(id);
         questionService.delete(id);
+
+        return "redirect:/ui/questions/all";
+    }
+
+    @GetMapping("/edit")
+    public String showUpdateQuestionPage(Model model, @RequestParam(name = "questionId") Long id) {
+        Question question = questionService.get(id);
+        model.addAttribute("questionForm", question);
+
+        return "updateQuestion";
+    }
+
+    @PostMapping(path = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String update(@PathVariable("id") long id, @ModelAttribute("questionForm") QuestionRequest questionRequest) {
+        Question question = questionMapper.toQuestion(questionRequest);
+        questionService.update(question, id);
+
         return "redirect:/ui/questions/all";
     }
 }

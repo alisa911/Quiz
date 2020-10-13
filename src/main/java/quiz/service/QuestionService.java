@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static quiz.service.util.UtilService.checkAnswerExists;
 import static quiz.service.util.UtilService.checkTrueAnswersCount;
@@ -28,7 +25,7 @@ public class QuestionService implements CrudService<Question> {
     @Transactional
     @Override
     public Question create(Question question) {
-        Set<Answer> answers = question.getAnswers();
+        List<Answer> answers = question.getAnswers();
         checkQuestionExists(question);
         checkTrueAnswersCount(answers);
 
@@ -52,13 +49,10 @@ public class QuestionService implements CrudService<Question> {
 
         question.setId(questionId);
 
-        Set<Answer> answersExists = questionExists.getAnswers();
-        Set<Answer> answersNew = question.getAnswers();
-        Set<Answer> answersAll = new HashSet<>(answersExists);
+        List<Answer> answersExists = questionExists.getAnswers();
+        List<Answer> answersNew = question.getAnswers();
 
-        Optional.ofNullable(answersNew).ifPresent(answersAll::addAll);
-
-        checkTrueAnswersCount(answersAll);
+        checkTrueAnswersCount(answersNew);
         checkAnswerExists(answersNew, answersExists, question, answerRepository);
 
         questionRepository.save(question);

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import quiz.repository.QuestionRepository;
 
 import java.util.List;
-import java.util.Set;
 
 import static quiz.service.util.UtilService.*;
 
@@ -23,7 +22,7 @@ public class AnswerService implements CrudService<Answer> {
     @Override
     public Answer create(Answer answer) {
         Question question = getQuestionByAnswer(answer, questionRepository);
-        Set<Answer> answersExists = question.getAnswers();
+        List<Answer> answersExists = question.getAnswers();
         checkAnswerExists(answer, answersExists);
 
         answersExists.add(answer);
@@ -36,7 +35,7 @@ public class AnswerService implements CrudService<Answer> {
     @Override
     public void update(Answer answer, Long id) {
         Answer answerExist = answerRepository.findById(id).orElseThrow(() -> new CustomNotFoundException(id));
-        Set<Answer> answersExists = answerExist.getQuestion().getAnswers();
+        List<Answer> answersExists = answerExist.getQuestion().getAnswers();
         checkAnswerExists(answer, answersExists);
 
         answersExists.remove(answerExist);

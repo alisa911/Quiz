@@ -5,13 +5,14 @@
     <title>Question List</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
-<body class="questions">
+<body class="lemons-background">
 <h1>Список вопросов</h1>
 <div>
     <table>
         <tr>
             <th>Вопрос</th>
             <th>Ответы</th>
+            <th></th>
             <th></th>
         </tr>
         <tr th:each="question:${questions}">
@@ -26,14 +27,18 @@
                     </tr>
                 </table>
             </td>
-            <td class="delete-td"><a th:href="@{/ui/questions/delete(questionId=${question.id})}" class="button delete">Delete</a>
+            <td class="delete-td"><a th:href="@{/ui/questions/delete(questionId=${question.id})}" class="button delete">Удалить</a>
+            </td>
+            <td class="delete-td"><a th:href="@{/ui/questions/edit(questionId=${question.id})}" class="button edit">Изменить</a>
             </td>
         </tr>
     </table>
 </div>
 <br/>
-<div style="text-align: center">
-    <a th:href="@{/ui/questions/}" class="button add">Добавить вопрос</a>
-</div>
+
+<a class="button add center" th:href="@{/ui/questions/}">&#10022; Добавить вопрос &#10022;</a>
+<br/>
+<a class="button add center" th:href="@{/}">&#10022; Вернуться на главную &#10022;</a>
+
 </body>
 </html>
