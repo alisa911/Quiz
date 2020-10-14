@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8"/>
     <title>Редактировать вопрос</title>
@@ -12,19 +12,28 @@
       th:object="${questionForm}"
       th:method="POST">
     <fieldset>
+        <legend>&#10022;</legend>
         Вопрос:
-        <input type="text" th:field="*{question}" th:value="${questionForm.question}"/>
+        <label>
+            <input type="text" th:field="*{question}" th:value="${questionForm.question}"/>
+        </label>
         <br/>
         <br/>
         Ответы:
         <div id="answers-list">
             <div th:each="answer, rowStat : *{answers}" class="answer-form">
-                <input type="text" th:field="*{answers[__${rowStat.index}__].value}"
-                       th:value="${questionForm.answers[__${rowStat.index}__].value}"/>
-                <input class="input-options" type="checkbox"
-                       th:value="${questionForm.answers[__${rowStat.index}__].isTrue}"
-                       th:field="*{answers[__${rowStat.index}__].isTrue}"/>
-                <input hidden type="text" th:value="${questionForm.answers[__${rowStat.index}__].question}"/>
+                <label>
+                    <input type="text" th:field="*{answers[__${rowStat.index}__].value}"
+                           th:value="${questionForm.answers[__${rowStat.index}__].value}"/>
+                </label>
+                <label>
+                    <input class="input-options" type="checkbox"
+                           th:value="${questionForm.answers[__${rowStat.index}__].isTrue}"
+                           th:field="*{answers[__${rowStat.index}__].isTrue}"/>
+                </label>
+                <label>
+                    <input hidden type="text" th:value="${questionForm.answers[__${rowStat.index}__].question}"/>
+                </label>
                 <a th:href="@{/ui/answers/delete(answerId=${questionForm.answers[__${rowStat.index}__].id})}"
                    class="button delete-answer input-options">удалить</a>
             </div>
@@ -33,6 +42,7 @@
         <div id="parentElement" class="row text-right">
             <button onclick="return addInputLine();" name="addInputLine-btn">Добавить еще один ответ</button>
         </div>
+        <p class="alert" th:if="${error != null}" th:text="${error}"></p>
     </fieldset>
     <br/>
     <input class="button add input-submit center" type="submit" value="&#10022; Сохранить &#10022;"/>

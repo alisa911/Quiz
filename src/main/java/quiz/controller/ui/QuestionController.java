@@ -7,14 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import quiz.controller.mapper.QuestionMapper;
 import quiz.controller.request.QuestionRequest;
-import quiz.domain.Answer;
 import quiz.domain.Question;
-import quiz.exception.exceptions.EmptyInputException;
 import quiz.service.QuestionService;
 
-import java.util.List;
-
-import static quiz.service.util.UtilService.createQuestionForm;
+import static quiz.service.util.UtilService.*;
 
 @RequestMapping("/ui/questions")
 @Controller("ui-question")
@@ -39,13 +35,7 @@ public class QuestionController {
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public String save(@ModelAttribute("questionForm") QuestionRequest questionRequest) {
         Question question = questionMapper.toQuestion(questionRequest);
-
-        String questionValue = question.getQuestion();
-        List<Answer> answers = question.getAnswers();
-
-        if (questionValue.equals("") || answers.stream().anyMatch(answer -> answer.getValue().equals(""))) {
-            throw new EmptyInputException("Заполните все поля ввода");
-        }
+        checkEmptyInput(question);
         questionService.create(question);
 
         return "redirect:/ui/questions/all";
@@ -61,6 +51,7 @@ public class QuestionController {
     @GetMapping("/edit")
     public String showUpdateQuestionPage(Model model, @RequestParam(name = "questionId") Long id) {
         Question question = questionService.get(id);
+        questionExist = question;
         model.addAttribute("questionForm", question);
         return "updateQuestion";
     }
@@ -68,9 +59,12 @@ public class QuestionController {
     @PostMapping(path = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String update(@PathVariable("id") long id, @ModelAttribute("questionForm") QuestionRequest questionRequest) {
         Question question = questionMapper.toQuestion(questionRequest);
+        checkEmptyInput(question);
         questionService.update(question, id);
+
         return "redirect:/ui/questions/all";
     }
+
 }
 
 

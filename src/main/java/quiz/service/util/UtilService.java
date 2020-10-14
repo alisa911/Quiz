@@ -8,10 +8,7 @@ import quiz.controller.request.AnswerRequest;
 import quiz.controller.request.QuestionRequest;
 import quiz.domain.Answer;
 import quiz.domain.Question;
-import quiz.exception.exceptions.AlreadyExistException;
-import quiz.exception.exceptions.CustomNotFoundException;
-import quiz.exception.exceptions.NoOneTrueAnswerException;
-import quiz.exception.exceptions.SeveralTrueAnswersException;
+import quiz.exception.exceptions.*;
 import quiz.repository.AnswerRepository;
 import quiz.repository.QuestionRepository;
 
@@ -19,6 +16,8 @@ import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UtilService {
+
+    public static Question questionExist;
 
     public static void checkTrueAnswersCount(List<Answer> answers) {
         int trueAnswersSize = (int) answers.stream()
@@ -76,9 +75,28 @@ public class UtilService {
         model.addAttribute("questionForm", questionRequest);
     }
 
+    public static void updateQuestionForm(Model model){
+        model.addAttribute("questionForm", questionExist);
+    }
+
     public static ModelAndView createQuestionFormWithError(Model model, Exception ex){
         createQuestionForm(model);
         model.addAttribute("error", ex.getMessage());
         return new ModelAndView("addQuestion");
+    }
+
+    public static ModelAndView updateQuestionFormWithError(Model model, Exception ex){
+        updateQuestionForm(model);
+        model.addAttribute("error", ex.getMessage());
+        return new ModelAndView("updateQuestion");
+    }
+
+    public static void checkEmptyInput(Question question){
+        String questionValue = question.getQuestion();
+        List<Answer> answers = question.getAnswers();
+
+        if (questionValue.equals("") || answers.stream().anyMatch(answer -> answer.getValue().equals(""))) {
+            throw new EmptyInputException("Заполните все поля ввода");
+        }
     }
 }

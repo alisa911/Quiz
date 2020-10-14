@@ -12,8 +12,11 @@
       th:object="${questionForm}"
       th:method="POST">
     <fieldset>
+        <legend>&#10022;</legend>
         Вопрос:
-        <input type="text" th:field="*{question}"/>
+        <label>
+            <input type="text" th:field="*{question}"/>
+        </label>
         <br/>
         <br/>
         Ответы:
