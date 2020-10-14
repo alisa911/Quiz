@@ -78,7 +78,7 @@ public class QuestionService implements CrudService<Question> {
         String questionName = question.getQuestion();
 
         if (questionRepository.findByQuestion(questionName).isPresent()) {
-            throw new AlreadyExistException("Such a question already exists: " + questionName);
+            throw new AlreadyExistException("Такой вопрос уже существует: " + questionName);
         }
     }
 }

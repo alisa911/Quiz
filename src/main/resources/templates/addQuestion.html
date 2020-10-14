@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8"/>
     <title>Добавить новый вопрос</title>
@@ -19,15 +19,22 @@
         Ответы:
         <div id="answers-list">
             <div th:each="answer, rowStat : *{answers}" class="answer-form">
-                <input class="input-add" type="text" th:field="*{answers[__${rowStat.index}__].value}"/>
-                <input class="input-options" type="checkbox" th:field="*{answers[__${rowStat.index}__].isTrue}"/>
-                <input hidden type="text" th:field="*{answers[__${rowStat.index}__].questionId}"/>
+                <label>
+                    <input class="input-add" type="text" th:field="*{answers[__${rowStat.index}__].value}"/>
+                </label>
+                <label>
+                    <input class="input-options" type="checkbox" th:field="*{answers[__${rowStat.index}__].isTrue}"/>
+                </label>
+                <label>
+                    <input hidden type="text" th:field="*{answers[__${rowStat.index}__].questionId}"/>
+                </label>
             </div>
         </div>
         <br/>
         <div id="parentElement" class="row text-right">
             <button onclick="return addInputLine();" name="addInputLine-btn">Добавить еще один ответ</button>
         </div>
+        <p class="alert" th:if="${error != null}" th:text="${error}"></p>
     </fieldset>
     <br/>
     <input class="button add input-submit center" type="submit" value="&#10022; Сохранить &#10022;"/>

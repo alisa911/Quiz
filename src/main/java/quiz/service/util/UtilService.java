@@ -2,6 +2,10 @@ package quiz.service.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
+import quiz.controller.request.AnswerRequest;
+import quiz.controller.request.QuestionRequest;
 import quiz.domain.Answer;
 import quiz.domain.Question;
 import quiz.exception.exceptions.AlreadyExistException;
@@ -12,7 +16,6 @@ import quiz.repository.AnswerRepository;
 import quiz.repository.QuestionRepository;
 
 import java.util.List;
-import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UtilService {
@@ -22,11 +25,11 @@ public class UtilService {
                 .filter(Answer::getIsTrue).count();
 
         if (trueAnswersSize > 1) {
-            throw new SeveralTrueAnswersException("You can add only one true answer");
+            throw new SeveralTrueAnswersException("Можно добавить только один правильный ответ");
         }
 
         if (trueAnswersSize == 0) {
-            throw new NoOneTrueAnswerException("Add at least one true answer");
+            throw new NoOneTrueAnswerException("Добавь хотя бы один правильный ответ");
         }
     }
 
@@ -65,5 +68,17 @@ public class UtilService {
     public static Question getQuestionByAnswer(Answer answer, QuestionRepository questionRepository) {
         Long questionId = answer.getQuestion().getId();
         return questionRepository.findById(questionId).orElseThrow(() -> new CustomNotFoundException(questionId));
+    }
+
+    public static void createQuestionForm(Model model){
+        AnswerRequest answerRequest = AnswerRequest.builder().build();
+        QuestionRequest questionRequest = QuestionRequest.builder().answers(List.of(answerRequest)).build();
+        model.addAttribute("questionForm", questionRequest);
+    }
+
+    public static ModelAndView createQuestionFormWithError(Model model, Exception ex){
+        createQuestionForm(model);
+        model.addAttribute("error", ex.getMessage());
+        return new ModelAndView("addQuestion");
     }
 }

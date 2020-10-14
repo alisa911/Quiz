@@ -2,16 +2,15 @@ package quiz.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import quiz.exception.exceptions.AlreadyExistException;
-import quiz.exception.exceptions.CustomNotFoundException;
-import quiz.exception.exceptions.NoOneTrueAnswerException;
-import quiz.exception.exceptions.SeveralTrueAnswersException;
+import org.springframework.web.servlet.ModelAndView;
+import quiz.exception.exceptions.*;
 
 import static org.springframework.http.ResponseEntity.notFound;
+import static quiz.service.util.UtilService.createQuestionFormWithError;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
@@ -25,20 +24,20 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(AlreadyExistException.class)
-    public ResponseEntity<Object> alreadyExist(AlreadyExistException ex) {
+    public ModelAndView alreadyExist(AlreadyExistException ex, Model model) {
         LOGGER.error(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        return createQuestionFormWithError(model, ex);
     }
 
-    @ExceptionHandler(SeveralTrueAnswersException.class)
-    public ResponseEntity<Object> severalTrueTranslations(SeveralTrueAnswersException ex) {
+    @ExceptionHandler({SeveralTrueAnswersException.class, NoOneTrueAnswerException.class})
+    public ModelAndView countTrueAnswers(Exception ex, Model model) {
         LOGGER.error(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        return createQuestionFormWithError(model, ex);
     }
 
-    @ExceptionHandler(NoOneTrueAnswerException.class)
-    public ResponseEntity<Object> severalTrueTranslations(NoOneTrueAnswerException ex) {
+    @ExceptionHandler(EmptyInputException.class)
+    public ModelAndView inputEmpty(EmptyInputException ex, Model model) {
         LOGGER.error(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        return createQuestionFormWithError(model, ex);
     }
 }

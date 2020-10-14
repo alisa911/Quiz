@@ -3,10 +3,10 @@ package quiz.exception.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.CONFLICT)
-public class AlreadyExistException extends RuntimeException {
+@ResponseStatus(HttpStatus.NO_CONTENT)
+public class EmptyInputException extends RuntimeException {
 
-    public AlreadyExistException(final String message) {
+    public EmptyInputException(final String message) {
         super(message);
     }
 }

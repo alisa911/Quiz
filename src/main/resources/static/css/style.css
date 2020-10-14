@@ -123,3 +123,7 @@ input {
     margin-right: auto;
 }
 
+fieldset .alert {
+    color: tomato;
+}
+
