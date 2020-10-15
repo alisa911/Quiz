@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UtilService {
 
-    public static Question questionExist;
+    public static Question questionUpdate;
 
     public static void checkTrueAnswersCount(List<Answer> answers) {
         int trueAnswersSize = (int) answers.stream()
@@ -38,17 +38,13 @@ public class UtilService {
         for (Answer answerExist : answersExists) {
             if (answersNew != null) {
                 for (Answer answerNew : answersNew) {
-                    if (answersNew.stream()
-                            .noneMatch(answer -> answer.getValue()
-                                    .equals(answerExist.getValue()))) {
+                    if (checkDeleteOldAnswer(answersNew, answerExist)) {
                         answerRepository.delete(answerExist);
-                    } else if (answerNew.getValue().equals(answerExist.getValue())) {
+                    } else if (checkEqualAnswers(answerNew, answerExist)) {
                         answerNew.setId(answerExist.getId());
                         answerNew.setQuestion(question);
                         answerRepository.save(answerNew);
-                    } else if (answersExists.stream()
-                            .noneMatch(answer -> answer.getValue()
-                                    .equals(answerNew.getValue()))) {
+                    } else if (checkDetectNewAnswer(answerNew, answersExists)) {
                         answerNew.setQuestion(question);
                         answerRepository.save(answerNew);
                     }
@@ -69,34 +65,50 @@ public class UtilService {
         return questionRepository.findById(questionId).orElseThrow(() -> new CustomNotFoundException(questionId));
     }
 
-    public static void createQuestionForm(Model model){
+    public static void createQuestionForm(Model model) {
         AnswerRequest answerRequest = AnswerRequest.builder().build();
         QuestionRequest questionRequest = QuestionRequest.builder().answers(List.of(answerRequest)).build();
         model.addAttribute("questionForm", questionRequest);
     }
 
-    public static void updateQuestionForm(Model model){
-        model.addAttribute("questionForm", questionExist);
+    public static void updateQuestionForm(Model model) {
+        model.addAttribute("questionForm", questionUpdate);
     }
 
-    public static ModelAndView createQuestionFormWithError(Model model, Exception ex){
+    public static ModelAndView createQuestionFormWithError(Model model, Exception ex) {
         createQuestionForm(model);
         model.addAttribute("error", ex.getMessage());
         return new ModelAndView("addQuestion");
     }
 
-    public static ModelAndView updateQuestionFormWithError(Model model, Exception ex){
+    public static ModelAndView updateQuestionFormWithError(Model model, Exception ex) {
         updateQuestionForm(model);
         model.addAttribute("error", ex.getMessage());
         return new ModelAndView("updateQuestion");
     }
 
-    public static void checkEmptyInput(Question question){
+    public static void checkEmptyInput(Question question) {
         String questionValue = question.getQuestion();
         List<Answer> answers = question.getAnswers();
 
         if (questionValue.equals("") || answers.stream().anyMatch(answer -> answer.getValue().equals(""))) {
             throw new EmptyInputException("Заполните все поля ввода");
         }
+    }
+
+    private static boolean checkDeleteOldAnswer(List<Answer> answersNew, Answer answerExist) {
+        return answersNew.stream()
+                .noneMatch(answer -> answer.getValue()
+                        .equals(answerExist.getValue()));
+    }
+
+    private static boolean checkEqualAnswers(Answer answerNew, Answer answerExist) {
+        return answerNew.getValue().equals(answerExist.getValue());
+    }
+
+    private static boolean checkDetectNewAnswer(Answer answerNew, List<Answer> answersExists) {
+        return answersExists.stream()
+                .noneMatch(answer -> answer.getValue()
+                        .equals(answerNew.getValue()));
     }
 }

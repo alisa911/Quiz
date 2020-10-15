@@ -51,8 +51,9 @@ public class QuestionController {
     @GetMapping("/edit")
     public String showUpdateQuestionPage(Model model, @RequestParam(name = "questionId") Long id) {
         Question question = questionService.get(id);
-        questionExist = question;
+        questionUpdate = question;
         model.addAttribute("questionForm", question);
+
         return "updateQuestion";
     }
 
