@@ -101,7 +101,7 @@ fieldset {
     font-family: serif;
 }
 
-input {
+input[type=text], input[type=submit] {
     width: 80%;
 }
 
@@ -125,5 +125,15 @@ input {
 
 fieldset .alert {
     color: tomato;
+}
+
+fieldset .radio {
+    margin-left: 0;
+}
+
+.score {
+    color: forestgreen;
+    font-size: 70px;
+    margin-top: 10px;
 }
 

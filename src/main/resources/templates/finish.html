@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Игра в Quiz</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body class="lemons-background">
+<h1>Ваш результат: <p class="score" th:utext="${score}">Score</p></h1>
+<br/>
+<a class="button add center" th:href="@{/}">&#10022; Вернуться на главную &#10022;</a>
+</body>
+</html>

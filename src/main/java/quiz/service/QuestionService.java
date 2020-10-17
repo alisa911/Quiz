@@ -74,6 +74,10 @@ public class QuestionService implements CrudService<Question> {
         return questionRepository.findAll();
     }
 
+    public List<Question> getRandomTenQuestions(){
+        return questionRepository.getRandomTenQuestions();
+    }
+
     private void checkQuestionExists(Question question) {
         String questionName = question.getQuestion();
 
