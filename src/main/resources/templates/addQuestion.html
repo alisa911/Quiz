@@ -15,7 +15,7 @@
         <legend>&#10022;</legend>
         Вопрос:
         <label>
-            <input type="text" th:field="*{question}"/>
+            <input class="input-question" type="text" th:field="*{question}"/>
         </label>
         <br/>
         <br/>
@@ -35,14 +35,22 @@
         </div>
         <br/>
         <div id="parentElement" class="row text-right">
-            <button onclick="return addInputLine();" name="addInputLine-btn">Добавить еще один ответ</button>
+            <button class="add-answer" onclick="return addInputLine();" name="addInputLine-btn">Добавить еще один
+                ответ
+            </button>
         </div>
         <p class="alert" th:if="${error != null}" th:text="${error}"></p>
     </fieldset>
     <br/>
-    <input class="button add input-submit center" type="submit" value="&#10022; Сохранить &#10022;"/>
     <br/>
-    <a class="button add center" th:href="@{/}">&#10022; Вернуться на главную &#10022;</a>
+    <br/>
+    <div class="btn">
+        <input class="button add width" type="submit" value="&#10022; Сохранить &#10022;"/>
+    </div>
+    <br/>
+    <div class="btn">
+        <a class="button add width" th:href="@{/}">&#10022; В начало &#10022;</a>
+    </div>
 </form>
 <script type="text/javascript">
     function addInputLine() {
@@ -50,7 +58,7 @@
         let div = document.createElement('div');
         let currentCount = answersListEl.getElementsByClassName('answer-form').length;
         div.className = 'answer-form';
-        div.innerHTML = '<input class="input-add" type="text" name="answers[' + currentCount + '].value" />\n' +
+        div.innerHTML = '<br/><input class="input-add" type="text" name="answers[' + currentCount + '].value" />\n' +
             '<input class="input-options" type="checkbox" name="answers[' + currentCount + '].isTrue" value="true" />\n' +
             '<input type="hidden" name="_answers[' + currentCount + '].isTrue" value="on"/>' +
             '<input hidden type="text" name="answers[' + currentCount + '].questionId" />';

@@ -6,13 +6,18 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body class="lemons-background">
-<h1>Добро пожаловать в Quiz</h1>
-<h2> Выбери один из следующих вариантов</h2>
-<a class="button add center" th:href="@{/ui/questions/}">&#10022; Добавить вопрос &#10022;</a>
+<h1 class="main">Quizzz</h1>
+<div class="btn">
+    <a class="button add width" th:href="@{/ui/questions/}">&#10022; Добавить вопрос &#10022;</a>
+</div>
 <br/>
-<a class="button add center" th:href="@{/ui/questions/all}">&#10022; Список вопросов &#10022;</a>
+<div class="btn">
+    <a class="button add width" th:href="@{/ui/questions/all}">&#10022; Список вопросов &#10022;</a>
+</div>
 <br/>
-<a class="button add center" th:href="@{/ui/game/play}">&#10022; Играть &#10022;</a>
+<div class="btn">
+    <a class="button add width" th:href="@{/ui/game/play}">&#10022; Играть &#10022;</a>
+</div>
 </body>
 
 </html>
