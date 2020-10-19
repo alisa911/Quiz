@@ -39,10 +39,10 @@ create table "answers"
 );
 
 alter table "answers"
-    add constraint "answers_fk1" foreign key ("question_id") references "questions" ("id");
+    add constraint "answers_fk1" foreign key ("question_id") references "questions" ("id") on delete cascade;
 alter table "game_session_question"
     add constraint "game_session_question_fk1" foreign key ("game_session_id") references "game_sessions" ("id");
 alter table "game_session_question"
     add constraint "game_session_question_fk2" foreign key ("question_id") references "questions" ("id");
 alter table "game_session_question"
-    add constraint "game_session_question_fk3" foreign key ("selected_answer_id") references "answers" ("id");
+    add constraint "game_session_question_fk3" foreign key ("selected_answer_id") references "answers" ("id") on delete cascade;
