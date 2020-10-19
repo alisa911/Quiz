@@ -32,12 +32,11 @@ public class UtilService {
         }
     }
 
-    public static void checkAnswerExists(List<Answer> answersNew, List<Answer> answersExists,
-                                         Question question, AnswerRepository answerRepository) {
+    public static void updateAnswers(List<Answer> answersNew, List<Answer> answersExists,
+                                     Question question, AnswerRepository answerRepository) {
 
-        for (Answer answerExist : answersExists) {
-            if (answersNew != null) {
-                for (Answer answerNew : answersNew) {
+        answersExists.forEach(answerExist ->
+                answersNew.forEach(answerNew -> {
                     if (checkDeleteOldAnswer(answersNew, answerExist)) {
                         answerRepository.delete(answerExist);
                     } else if (checkEqualAnswers(answerNew, answerExist)) {
@@ -48,9 +47,8 @@ public class UtilService {
                         answerNew.setQuestion(question);
                         answerRepository.save(answerNew);
                     }
-                }
-            }
-        }
+                }));
+
     }
 
     public static void checkAnswerExists(Answer answer, List<Answer> answersExists) {

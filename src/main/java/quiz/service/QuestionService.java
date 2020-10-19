@@ -9,11 +9,12 @@ import quiz.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import quiz.service.util.UtilService;
 
 import java.util.*;
 
-import static quiz.service.util.UtilService.checkAnswerExists;
 import static quiz.service.util.UtilService.checkTrueAnswersCount;
+import static quiz.service.util.UtilService.updateAnswers;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class QuestionService implements CrudService<Question> {
         Question questionExists = questionRepository.findById(questionId)
                 .orElseThrow(() -> new CustomNotFoundException(questionId));
 
-        if (!questionExists.getQuestion().equals(question.getQuestion())){
+        if (!questionExists.getQuestion().equals(question.getQuestion())) {
             checkQuestionExists(question);
         }
 
@@ -52,8 +53,10 @@ public class QuestionService implements CrudService<Question> {
         List<Answer> answersExists = questionExists.getAnswers();
         List<Answer> answersNew = question.getAnswers();
 
-        checkTrueAnswersCount(answersNew);
-        checkAnswerExists(answersNew, answersExists, question, answerRepository);
+        if (answersNew != null) {
+            updateAnswers(answersNew, answersExists, question, answerRepository);
+            checkTrueAnswersCount(answersNew);
+        }
 
         questionRepository.save(question);
     }
@@ -74,13 +77,12 @@ public class QuestionService implements CrudService<Question> {
         return questionRepository.findAll();
     }
 
-    public List<Question> getRandomTenQuestions(){
+    public List<Question> getRandomTenQuestions() {
         return questionRepository.getRandomTenQuestions();
     }
 
     private void checkQuestionExists(Question question) {
         String questionName = question.getQuestion();
-
         if (questionRepository.findByQuestion(questionName).isPresent()) {
             throw new AlreadyExistException("Такой вопрос уже существует: " + questionName);
         }
