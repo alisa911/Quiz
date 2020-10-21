@@ -11,8 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import quiz.domain.Answer;
 import quiz.exception.exceptions.AlreadyExistException;
 import quiz.exception.exceptions.CustomNotFoundException;
-import quiz.exception.exceptions.NoOneTrueAnswerException;
-import quiz.exception.exceptions.SeveralTrueAnswersException;
 import quiz.repository.AnswerRepository;
 import quiz.repository.QuestionRepository;
 
@@ -92,19 +90,6 @@ class AnswerServiceTest {
         assertMatch(actualAnswers, expectedAnswers);
     }
 
-    @Test
-    void createAlreadyExist(){
-        assertThrows(AlreadyExistException.class, () ->
-                answerService.create(ANSWER_2));
-    }
-
-    @Test
-    void createTrueAnswerExist(){
-        ANSWER_1.setQuestion(QUESTION_1);
-        assertThrows(SeveralTrueAnswersException.class, () ->
-                answerService.create(ANSWER_1));
-    }
-
     //update
     @Test
     void update() {
@@ -114,31 +99,4 @@ class AnswerServiceTest {
 
         assertMatch(actualAnswer, ANSWER_2);
     }
-
-    @Test
-    void updateNotFound() {
-        assertThrows(CustomNotFoundException.class, () ->
-                answerService.update(ANSWER_2, BIG_ID));
-    }
-
-    @Test
-    void updateAlreadyExist(){
-        assertThrows(AlreadyExistException.class, () ->
-                answerService.update(ANSWER_3, answerId));
-    }
-
-    @Test
-    void updateTrueAnswerExist(){
-        Long id = ANSWER_3.getId();
-
-        assertThrows(SeveralTrueAnswersException.class, () ->
-                answerService.update(ANSWER_6, id));
-    }
-
-    @Test
-    void updateNoOneTrueAnswers(){
-        assertThrows(NoOneTrueAnswerException.class, () ->
-                answerService.update(ANSWER_4, answerId));
-    }
-
 }

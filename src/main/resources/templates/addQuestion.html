@@ -8,7 +8,7 @@
 <body class="lemons-background">
 <h1>Добавить вопрос:</h1>
 
-<form th:action="@{/ui/questions}"
+<form th:action="@{/ui/questions/save}"
       th:object="${questionForm}"
       th:method="POST">
     <fieldset>
@@ -18,6 +18,9 @@
             <input class="input-question" type="text" th:field="*{question}"/>
         </label>
         <br/>
+        <ul th:if="${#fields.hasErrors('question')}">
+            <li class="alert" th:each="err : ${#fields.errors('question')}" th:text="${err}">Input is incorrect</li>
+        </ul>
         <br/>
         Ответы:
         <div id="answers-list">
@@ -28,10 +31,15 @@
                 <label>
                     <input class="input-options" type="checkbox" th:field="*{answers[__${rowStat.index}__].isTrue}"/>
                 </label>
-                <label>
-                    <input hidden type="text" th:field="*{answers[__${rowStat.index}__].questionId}"/>
-                </label>
+                <ul th:if="${#fields.hasErrors('answers[__${rowStat.index}__].value')}">
+                    <li class="alert" th:each="err : ${#fields.errors('answers[__${rowStat.index}__].value')}"
+                        th:text="${err}">Input is incorrect
+                    </li>
+                </ul>
             </div>
+            <ul th:if="${#fields.hasErrors('answers')}">
+                <li class="alert" th:each="err : ${#fields.errors('answers')}" th:text="${err}">Input is incorrect</li>
+            </ul>
         </div>
         <br/>
         <div id="parentElement" class="row text-right">
@@ -58,7 +66,7 @@
         let div = document.createElement('div');
         let currentCount = answersListEl.getElementsByClassName('answer-form').length;
         div.className = 'answer-form';
-        div.innerHTML = '<br/><input class="input-add" type="text" name="answers[' + currentCount + '].value" />\n' +
+        div.innerHTML = '<input class="input-add" type="text" name="answers[' + currentCount + '].value" />\n' +
             '<input class="input-options" type="checkbox" name="answers[' + currentCount + '].isTrue" value="true" />\n' +
             '<input type="hidden" name="_answers[' + currentCount + '].isTrue" value="on"/>' +
             '<input hidden type="text" name="answers[' + currentCount + '].questionId" />';

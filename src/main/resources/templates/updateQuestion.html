@@ -17,13 +17,22 @@
         <label>
             <input type="text" th:field="*{question}" th:value="${questionForm.question}"/>
         </label>
+        <label>
+            <input hidden type="text" th:value="${questionForm.question}"/>
+        </label>
         <br/>
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <li class="alert" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</li>
+        </div>
+        <ul th:if="${#fields.hasErrors('question')}">
+            <li class="alert" th:each="err : ${#fields.errors('question')}" th:text="${err}">Input is incorrect</li>
+        </ul>
         <br/>
         Ответы:
         <div id="answers-list">
             <div th:each="answer, rowStat : *{answers}" class="answer-form">
                 <label>
-                    <input type="text" th:field="*{answers[__${rowStat.index}__].value}"
+                    <input class="input-add" type="text" th:field="*{answers[__${rowStat.index}__].value}"
                            th:value="${questionForm.answers[__${rowStat.index}__].value}"/>
                 </label>
                 <label>
@@ -31,23 +40,32 @@
                            th:value="${questionForm.answers[__${rowStat.index}__].isTrue}"
                            th:field="*{answers[__${rowStat.index}__].isTrue}"/>
                 </label>
-                <label>
-                    <input hidden type="text" th:value="${questionForm.answers[__${rowStat.index}__].question}"/>
-                </label>
-                <a th:href="@{/ui/answers/delete(answerId=${questionForm.answers[__${rowStat.index}__].id})}"
-                   class="button delete-answer input-options">удалить</a>
+                <ul th:if="${#fields.hasErrors('answers[__${rowStat.index}__].value')}">
+                    <li class="alert" th:each="err : ${#fields.errors('answers[__${rowStat.index}__].value')}"
+                        th:text="${err}">Input is incorrect
+                    </li>
+                </ul>
             </div>
+            <ul th:if="${#fields.hasErrors('answers')}">
+                <li class="alert" th:each="err : ${#fields.errors('answers')}" th:text="${err}">Input is incorrect</li>
+            </ul>
         </div>
         <br/>
         <div id="parentElement" class="row text-right">
-            <button onclick="return addInputLine();" name="addInputLine-btn">Добавить еще один ответ</button>
+            <button class="add-answer" onclick="return addInputLine();" name="addInputLine-btn">Добавить еще один
+                ответ
+            </button>
         </div>
         <p class="alert" th:if="${error != null}" th:text="${error}"></p>
     </fieldset>
     <br/>
-    <input class="button add input-submit center" type="submit" value="&#10022; Сохранить &#10022;"/>
+    <div class="btn">
+        <input class="button add width" type="submit" value="&#10022; Сохранить &#10022;"/>
+    </div>
     <br/>
-    <a class="button add center" th:href="@{/}">&#10022; Вернуться на главную &#10022;</a>
+    <div class="btn">
+        <a class="button add width" th:href="@{/}">&#10022; В начало &#10022;</a>
+    </div>
 </form>
 <script type="text/javascript">
     function addInputLine() {
@@ -55,11 +73,10 @@
         let div = document.createElement('div');
         let currentCount = answersListEl.getElementsByClassName('answer-form').length;
         div.className = 'answer-form';
-        div.innerHTML = '<input type="text" name="answers[' + currentCount + '].value" />\n' +
+        div.innerHTML = '<input class="input-add" type="text" name="answers[' + currentCount + '].value" />\n' +
             '<input class="input-options" type="checkbox" name="answers[' + currentCount + '].isTrue" value="true" />\n' +
             '<input type="hidden" name="_answers[' + currentCount + '].isTrue" value="on"/>' +
-            '<input hidden type="text" name="answers[' + currentCount + '].question" />' +
-            '<a th:href="@{/ui/answers/delete(answerId=${questionForm.answers[__${rowStat.index}__].id})}" class="button delete-answer input-options">удалить</a>';
+            '<input hidden type="text" name="answers[' + currentCount + '].question" />';
         answersListEl.appendChild(div);
         return false;
     }

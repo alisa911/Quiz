@@ -13,7 +13,6 @@ public interface AnswerMapper {
 
     AnswerResponse toAnswerResponse(Answer answer);
 
-    @Mapping(target = "question.id", source = "questionId")
     Answer toAnswer(AnswerRequest answerRequest);
 
     List<AnswerResponse> toAnswerResponse(List<Answer> answers);

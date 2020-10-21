@@ -9,13 +9,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import quiz.domain.Question;
 import quiz.exception.exceptions.AlreadyExistException;
 import quiz.exception.exceptions.CustomNotFoundException;
-import quiz.exception.exceptions.NoOneTrueAnswerException;
-import quiz.exception.exceptions.SeveralTrueAnswersException;
 import quiz.repository.AnswerRepository;
 import quiz.repository.QuestionRepository;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static quiz.TestData.*;
@@ -80,26 +77,6 @@ class QuestionServiceTest {
         List<Question> actualQuestions = questionService.getAll();
 
         assertMatch(actualQuestions, expectedQuestions);
-    }
-
-    @Test
-    void createAlreadyExist(){
-        assertThrows(AlreadyExistException.class, () ->
-                questionService.create(QUESTION_1));
-    }
-
-    @Test
-    void createSeveralTrueAnswers(){
-        QUESTION_3.setAnswers(List.of(ANSWER_1, ANSWER_2));
-        assertThrows(SeveralTrueAnswersException.class, () ->
-                questionService.create(QUESTION_3));
-    }
-
-    @Test
-    void createNoOneTrueAnswers(){
-        QUESTION_3.setAnswers(List.of(ANSWER_3, ANSWER_4));
-        assertThrows(NoOneTrueAnswerException.class, () ->
-                questionService.create(QUESTION_3));
     }
 
     //update

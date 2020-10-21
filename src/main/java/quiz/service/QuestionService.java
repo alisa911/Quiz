@@ -9,11 +9,9 @@ import quiz.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import quiz.service.util.UtilService;
 
 import java.util.*;
 
-import static quiz.service.util.UtilService.checkTrueAnswersCount;
 import static quiz.service.util.UtilService.updateAnswers;
 
 @Service
@@ -27,12 +25,8 @@ public class QuestionService implements CrudService<Question> {
     @Override
     public Question create(Question question) {
         List<Answer> answers = question.getAnswers();
-        checkQuestionExists(question);
-        checkTrueAnswersCount(answers);
-
         questionRepository.save(question);
-
-        answers.forEach(translation -> translation.setQuestion(question));
+        answers.forEach(answer -> answer.setQuestion(question));
         answers.forEach(answerRepository::save);
 
         return question;
@@ -44,18 +38,12 @@ public class QuestionService implements CrudService<Question> {
         Question questionExists = questionRepository.findById(questionId)
                 .orElseThrow(() -> new CustomNotFoundException(questionId));
 
-        if (!questionExists.getQuestion().equals(question.getQuestion())) {
-            checkQuestionExists(question);
-        }
-
         question.setId(questionId);
-
         List<Answer> answersExists = questionExists.getAnswers();
         List<Answer> answersNew = question.getAnswers();
 
         if (answersNew != null) {
             updateAnswers(answersNew, answersExists, question, answerRepository);
-            checkTrueAnswersCount(answersNew);
         }
 
         questionRepository.save(question);
@@ -65,6 +53,11 @@ public class QuestionService implements CrudService<Question> {
     public Question get(Long id) {
         return questionRepository.findById(id)
                 .orElseThrow(() -> new CustomNotFoundException(id));
+    }
+
+    public Question getByQuestion(String question) {
+        return questionRepository.findByQuestion(question)
+                .orElseThrow(() -> new CustomNotFoundException(question));
     }
 
     @Override
@@ -79,12 +72,5 @@ public class QuestionService implements CrudService<Question> {
 
     public List<Question> getRandomTenQuestions() {
         return questionRepository.getRandomTenQuestions();
-    }
-
-    private void checkQuestionExists(Question question) {
-        String questionName = question.getQuestion();
-        if (questionRepository.findByQuestion(questionName).isPresent()) {
-            throw new AlreadyExistException("Такой вопрос уже существует: " + questionName);
-        }
     }
 }

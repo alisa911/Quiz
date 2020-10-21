@@ -9,4 +9,8 @@ public class CustomNotFoundException extends RuntimeException {
     public CustomNotFoundException(Long id) {
         super("Not found with id " + id);
     }
+
+    public CustomNotFoundException(String question) {
+        super("Not found with id " + question);
+    }
 }
