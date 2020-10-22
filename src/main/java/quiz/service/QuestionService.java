@@ -3,7 +3,6 @@ package quiz.service;
 import quiz.domain.Answer;
 import quiz.domain.Question;
 import quiz.exception.exceptions.CustomNotFoundException;
-import quiz.exception.exceptions.AlreadyExistException;
 import quiz.repository.AnswerRepository;
 import quiz.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +24,11 @@ public class QuestionService implements CrudService<Question> {
     @Override
     public Question create(Question question) {
         List<Answer> answers = question.getAnswers();
-        questionRepository.save(question);
-        answers.forEach(answer -> answer.setQuestion(question));
+        Question questionNew = questionRepository.save(question);
+        answers.forEach(answer -> answer.setQuestion(questionNew));
         answers.forEach(answerRepository::save);
 
-        return question;
+        return questionNew;
     }
 
     @Transactional

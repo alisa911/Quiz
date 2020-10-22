@@ -1,9 +1,3 @@
-drop table if exists game_sessions cascade;
-drop table if exists game_session_question cascade;
-drop table if exists questions cascade;
-drop table if exists answers cascade;
-
-
 create table "game_sessions"
 (
     "id"                  bigserial               not null,

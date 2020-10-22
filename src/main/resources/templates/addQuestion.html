@@ -18,6 +18,9 @@
             <input class="input-question" type="text" th:field="*{question}"/>
         </label>
         <br/>
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <li class="alert" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</li>
+        </div>
         <ul th:if="${#fields.hasErrors('question')}">
             <li class="alert" th:each="err : ${#fields.errors('question')}" th:text="${err}">Input is incorrect</li>
         </ul>
