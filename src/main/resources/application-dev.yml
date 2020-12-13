@@ -2,16 +2,17 @@ spring:
   profiles: dev
   datasource:
     driverClassName: org.postgresql.Driver
-    username: ${QUIZ_DB_USERNAME}
-    password: ${QUIZ_DB_PASSWORD}
-    url: ${QUIZ_DB_URL}
+    username: plotva
+    url: jdbc:postgresql://localhost:5432/postgres
+    type: org.apache.tomcat.jdbc.pool.DataSource
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     changeLog: "classpath:db/changelog/changelog.xml"
+    enabled: false
 server:
   port: 8080
 
