@@ -27,7 +27,6 @@ public class UtilService {
                         answerRepository.save(answerNew);
                     }
                 }));
-
     }
 
     private static boolean checkDeleteOldAnswer(List<Answer> answersNew, Answer answerExist) {

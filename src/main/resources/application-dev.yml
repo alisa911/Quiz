@@ -11,8 +11,7 @@ spring:
     show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
-        changeLog: "classpath:db/changelog/changelog.xml"
-
+    changeLog: "classpath:db/changelog/changelog.xml"
 server:
   port: 7000
 

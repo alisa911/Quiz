@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/ui/questions")
-@Controller("ui-question")
+@Controller
 @RequiredArgsConstructor
 public class QuestionController {
 
@@ -24,7 +24,7 @@ public class QuestionController {
     private final QuestionMapper questionMapper;
 
     @GetMapping("/all")
-    public String all(Model model) {
+    public String getAllQuestions(Model model) {
         model.addAttribute("questions", questionService.getAll());
         return "questionList";
     }
@@ -37,8 +37,8 @@ public class QuestionController {
     }
 
     @PostMapping(path = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String save(@Valid @ModelAttribute("questionForm") QuestionRequest questionRequest,
-                       BindingResult bindingResult) {
+    public String saveQuestion(@Valid @ModelAttribute("questionForm") QuestionRequest questionRequest,
+                               BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "addQuestion";
@@ -50,7 +50,7 @@ public class QuestionController {
     }
 
     @GetMapping("/delete")
-    public String handleDeleteQuestion(@RequestParam(name = "questionId") Long id) {
+    public String deleteQuestionById(@RequestParam(name = "questionId") Long id) {
         questionService.get(id);
         questionService.delete(id);
         return "redirect:/ui/questions/all";
@@ -64,8 +64,9 @@ public class QuestionController {
     }
 
     @PostMapping(path = "/update/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String update(@PathVariable("id") long id,
-                         @Valid @ModelAttribute("questionForm") QuestionRequest questionRequest, BindingResult bindingResult) {
+    public String updateQuestion(@PathVariable("id") long id,
+                                 @Valid @ModelAttribute("questionForm") QuestionRequest questionRequest,
+                                 BindingResult bindingResult) {
 
         questionRequest.setId(id);
 

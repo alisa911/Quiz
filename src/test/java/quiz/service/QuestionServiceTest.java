@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import quiz.domain.Question;
-import quiz.exception.exceptions.AlreadyExistException;
 import quiz.exception.exceptions.CustomNotFoundException;
 import quiz.repository.AnswerRepository;
 import quiz.repository.QuestionRepository;

@@ -9,14 +9,14 @@ import quiz.domain.Answer;
 import quiz.service.AnswerService;
 
 @RequestMapping("/ui/answers")
-@Controller("ui-answer")
+@Controller
 @RequiredArgsConstructor
 public class AnswerController {
 
     private final AnswerService answerService;
 
     @GetMapping("/delete")
-    public String handleDeleteQuestion(@RequestParam(name = "answerId") Long id) {
+    public String deleteAnswerById(@RequestParam(name = "answerId") Long id) {
         Answer answer = answerService.get(id);
         Long questionId = answer.getQuestion().getId();
         answerService.delete(id);
