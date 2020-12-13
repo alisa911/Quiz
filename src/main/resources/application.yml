@@ -1,5 +1,9 @@
 spring:
-  profiles: dev
+  profiles:
+    active: defalt
+---
+spring:
+  profiles: defalt
   datasource:
     driverClassName: org.postgresql.Driver
     username: plotva
