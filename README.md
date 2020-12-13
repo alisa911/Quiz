@@ -1,9 +1,10 @@
 ### Quiz game web app
 
+Demo: https://quiz-spring-boot.herokuapp.com/
+
 #### Installation and Launch
 ##### Pre-Requisites:
 Please make sure you have following tools installed before continuing:
-- Docker, Docker-Compose
 - Java 11
 - PostgresSQL 10+
 
@@ -26,9 +27,12 @@ Create database tables running following SQL file in your database: `<project_ro
 
 Run following commands in terminal:
 ```
+$ java -jar path to jar .../quiz/target/quiz-1.0-SNAPSHOT.jar
+```
+Run with Docker:
+```
 $ ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=plotva/quiz
 $ docker-compose up
 ```
-
 #### Done
-Open http://localhost:7000 in your browser.
+Open http://localhost:8080 in your browser.

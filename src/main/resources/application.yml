@@ -6,8 +6,8 @@ spring:
   profiles: defalt
   datasource:
     driverClassName: org.postgresql.Driver
-    username: plotva
-    url: jdbc:postgresql://localhost:5432/postgres
+    username: ${QUIZ_DB_USERNAME}
+    url: ${QUIZ_DB_URL}
     type: org.apache.tomcat.jdbc.pool.DataSource
   jpa:
     hibernate:
