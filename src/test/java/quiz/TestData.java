@@ -15,13 +15,16 @@ public class TestData {
     public static Answer ANSWER_2 = new Answer(null,"никогда",null,true);
     public static Answer ANSWER_3 = new Answer(null,"не знаю",null,false);
     public static Answer ANSWER_4 = new Answer(null,"нигде",null,false);
-    public static Answer ANSWER_6 = new Answer(null,"что",null,true);
 
     public static String STRING = "Но как же так?";
 
     public static Long BIG_ID = 100L;
 
-    public static <T> void assertMatch(T actual, T expected) {
-        assertThat(actual).isEqualToComparingOnlyGivenFields(expected);
+    public static <T> void assertMatchForAnswer(T actual, T expected) {
+        assertThat(actual).isEqualToIgnoringGivenFields(expected,"question", "elementData", "modCount");
+    }
+
+    public static <T> void assertMatchForQuestion(T actual, T expected) {
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "answers", "elementData", "modCount");
     }
 }

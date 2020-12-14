@@ -40,7 +40,7 @@ class QuestionServiceTest {
     @Test
     void get() {
         Question actualQuestion = questionService.get(questionId);
-        assertMatch(actualQuestion, QUESTION_1);
+        assertMatchForQuestion(actualQuestion, QUESTION_1);
     }
 
     @Test
@@ -54,7 +54,7 @@ class QuestionServiceTest {
         List<Question> expectedQuestions = List.of(QUESTION_1, QUESTION_2);
         List<Question> actualQuestions = questionService.getAll();
 
-        assertMatch(actualQuestions, expectedQuestions);
+        assertMatchForQuestion(actualQuestions, expectedQuestions);
     }
 
     //delete
@@ -64,7 +64,7 @@ class QuestionServiceTest {
         List<Question> expectedQuestions = List.of(QUESTION_2);
         List<Question> actualQuestions = questionService.getAll();
 
-        assertMatch(actualQuestions, expectedQuestions);
+        assertMatchForQuestion(actualQuestions, expectedQuestions);
     }
 
     //create
@@ -75,17 +75,16 @@ class QuestionServiceTest {
         List<Question> expectedQuestions = List.of(QUESTION_1, QUESTION_2, QUESTION_3);
         List<Question> actualQuestions = questionService.getAll();
 
-        assertMatch(actualQuestions, expectedQuestions);
+        assertMatchForQuestion(actualQuestions, expectedQuestions);
     }
 
     //update
     @Test
     void update() {
-        Question actualQuestion = questionService.get(questionId);
         QUESTION_1.setQuestion(STRING);
         questionService.update(QUESTION_1, questionId);
-
-        assertMatch(actualQuestion, QUESTION_1);
+        Question questionUpdate = questionService.get(questionId);
+        assertMatchForQuestion(questionUpdate, QUESTION_1);
     }
 
     @Test

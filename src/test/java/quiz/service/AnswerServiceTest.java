@@ -5,6 +5,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,6 +25,7 @@ import static quiz.TestData.*;
 @SpringBootTest(properties = "spring.profiles.active:test")
 class AnswerServiceTest {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AnswerServiceTest.class);
 
     private final AnswerService answerService;
     private final AnswerRepository answerRepository;
@@ -51,7 +54,10 @@ class AnswerServiceTest {
     @Test
     void get(){
         Answer actualAnswer = answerService.get(answerId);
-        assertMatch(actualAnswer, ANSWER_2);
+        LOGGER.info("actualAnswer={}", actualAnswer.getValue());
+        LOGGER.info("expectedAnswer={}", ANSWER_2.getValue());
+
+        assertMatchForAnswer(actualAnswer, ANSWER_2);
     }
 
     @Test
@@ -65,7 +71,7 @@ class AnswerServiceTest {
         List<Answer> expectedAnswers = List.of(ANSWER_2, ANSWER_3);
         List<Answer> actualAnswers = answerService.getAll();
 
-        assertMatch(actualAnswers, expectedAnswers);
+        assertMatchForAnswer(actualAnswers, expectedAnswers);
     }
 
     //delete
@@ -75,7 +81,7 @@ class AnswerServiceTest {
         List<Answer> expectedAnswers = List.of(ANSWER_3);
         List<Answer> actualAnswers = answerService.getAll();
 
-        assertMatch(actualAnswers, expectedAnswers);
+        assertMatchForAnswer(actualAnswers, expectedAnswers);
     }
 
     //create
@@ -86,16 +92,18 @@ class AnswerServiceTest {
         List<Answer> expectedAnswers = List.of(ANSWER_2, ANSWER_3, ANSWER_4);
         List<Answer> actualAnswers = answerService.getAll();
 
-        assertMatch(actualAnswers, expectedAnswers);
+        assertMatchForAnswer(actualAnswers, expectedAnswers);
     }
 
     //update
     @Test
     void update() {
-        Answer actualAnswer = answerService.get(answerId);
         ANSWER_2.setValue(STRING);
         answerService.update(ANSWER_2, answerId);
+        Answer answerUpdate = answerService.get(answerId);
+        LOGGER.info("actualAnswer={}",answerUpdate.getValue());
+        LOGGER.info("expectedAnswer={}", ANSWER_2);
 
-        assertMatch(actualAnswer, ANSWER_2);
+        assertMatchForAnswer(answerUpdate, ANSWER_2);
     }
 }
